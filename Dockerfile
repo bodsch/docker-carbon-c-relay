@@ -1,26 +1,21 @@
-FROM bodsch/docker-alpine-base:latest
+
+FROM bodsch/docker-alpine-base:1609-01
 
 MAINTAINER Bodo Schulz <bodo@boone-schulz.de>
 
-LABEL version="1.5.0"
+LABEL version="1.5.2"
 
-# 3000: grafana (plain)
-# EXPOSE 3000
-
-ENV VERSION 2.1
+ENV VERSION 2.2
 
 # ---------------------------------------------------------------------------------------
 
 RUN \
   apk --quiet --no-cache update && \
+  apk --quiet --no-cache upgrade && \
   apk --quiet --no-cache add \
     build-base \
     git \
-    netcat-openbsd \
-    curl \
-    pwgen \
-    jq \
-    yajl-tools && \
+    curl && \
   curl \
   --silent \
   --location \
@@ -31,17 +26,22 @@ RUN \
     | tar x -C /opt/ && \
   cd /opt/carbon-c-relay-${VERSION} && \
   make && \
-  cp relay /usr/bin/
+  cp relay /usr/bin/ && \
+  mkdir /etc/carbon-relay && \
+  mkdir /var/log/carbon-relay && \
+  cp -v issues/*.conf /etc/carbon-relay/ && \
+  apk del --purge \
+    build-base \
+    git \
+    curl && \
+  rm -rf \
+    /tmp/* \
+    /var/cache/apk/*
 
+ADD rootfs/ /
 
-#ADD rootfs/ /
+CMD [ "/opt/startup.sh" ]
 
-#VOLUME [ "/usr/share/grafana/data" "/usr/share/grafana/public/dashboards" "/opt/grafana/dashboards" ]
-
-#WORKDIR /usr/share/grafana
-
-# CMD [ "/opt/startup.sh" ]
-
-CMD [ '/bin/sh' ]
+# CMD [ '/bin/sh' ]
 
 # EOF
