@@ -1,6 +1,20 @@
 #!/bin/sh
 
 
+GRAPHITE_HOST=${GRAPHITE_HOST:-graphite}
+GRAPHITE_PORT=${GRAPHITE_PORT:-2003}
+
+cfgFile="/etc/carbon-c-relay.conf"
+
+createConfig() {
+
+  sed -i \
+    -e "s/%GRAPHITE_HOST%/${GRAPHITE_HOST}/" \
+    -e "s/%GRAPHITE_PORT%/${GRAPHITE_PORT}/" \
+    ${cfgFile}
+
+}
+
 startSupervisor() {
 
   echo -e "\n Starting Supervisor.\n\n"
@@ -15,6 +29,10 @@ startSupervisor() {
 
 
 run() {
+
+  createConfig
+
+  /usr/bin/carbon-c-relay -f /etc/carbon-c-relay.conf -t < /dev/null > /dev/null
 
   echo -e "\n"
   echo " ==================================================================="

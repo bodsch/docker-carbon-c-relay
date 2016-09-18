@@ -5,6 +5,8 @@ MAINTAINER Bodo Schulz <bodo@boone-schulz.de>
 
 LABEL version="1.5.2"
 
+EXPOSE 2003
+
 ENV VERSION 2.2
 
 # ---------------------------------------------------------------------------------------
@@ -26,13 +28,11 @@ RUN \
     | tar x -C /opt/ && \
   cd /opt/carbon-c-relay-${VERSION} && \
   make && \
-  cp relay /usr/bin/ && \
-  mkdir /etc/carbon-relay && \
-  mkdir /var/log/carbon-relay && \
-  cp -v issues/*.conf /etc/carbon-relay/ && \
+  cp relay /usr/bin/carbon-c-relay && \
   apk del --purge \
     build-base \
     git \
+    ca-certificates \
     curl && \
   rm -rf \
     /tmp/* \
