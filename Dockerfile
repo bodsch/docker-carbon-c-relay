@@ -35,13 +35,12 @@ RUN \
     ca-certificates \
     curl && \
   rm -rf \
+    /opt/* \
     /tmp/* \
     /var/cache/apk/*
 
 ADD rootfs/ /
 
 CMD [ "/opt/startup.sh" ]
-
-# CMD [ '/bin/sh' ]
 
 # EOF
