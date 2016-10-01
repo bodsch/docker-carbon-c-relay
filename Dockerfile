@@ -1,9 +1,9 @@
 
-FROM bodsch/docker-alpine-base:1609-01
+FROM bodsch/docker-alpine-base:1610-01
 
 MAINTAINER Bodo Schulz <bodo@boone-schulz.de>
 
-LABEL version="1.5.2"
+LABEL version="1.6.0"
 
 EXPOSE 2003
 
@@ -39,7 +39,7 @@ RUN \
     /tmp/* \
     /var/cache/apk/*
 
-ADD rootfs/ /
+COPY rootfs/ /
 
 CMD [ "/opt/startup.sh" ]
 
