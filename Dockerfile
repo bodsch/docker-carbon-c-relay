@@ -1,13 +1,13 @@
 
-FROM bodsch/docker-alpine-base:1610-02
+FROM bodsch/docker-alpine-base:1612-01
 
 MAINTAINER Bodo Schulz <bodo@boone-schulz.de>
 
-LABEL version="1.6.1"
+LABEL version="1.6.2"
 
 EXPOSE 2003
 
-ENV VERSION 2.2
+ENV VERSION 2.3
 
 # ---------------------------------------------------------------------------------------
 
