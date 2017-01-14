@@ -32,15 +32,17 @@ run() {
 
   createConfig
 
-  /usr/bin/carbon-c-relay -f /etc/carbon-c-relay.conf -t < /dev/null > /dev/null
+  /usr/bin/carbon-c-relay -f ${cfgFile} -t < /dev/null > /dev/null
 
-  echo -e "\n"
-  echo " ==================================================================="
-  echo " starting carbon-c-relay"
-  echo " ==================================================================="
-  echo ""
+  /usr/bin/carbon-c-relay -f ${cfgFile} -w 4 -q 2056 -m -b 2056 -l /var/log/carbon-relay.log
 
-  startSupervisor
+#  echo -e "\n"
+#  echo " ==================================================================="
+#  echo " starting carbon-c-relay"
+#  echo " ==================================================================="
+#  echo ""
+#
+#  startSupervisor
 }
 
 run

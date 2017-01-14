@@ -1,13 +1,13 @@
 
-FROM bodsch/docker-alpine-base:1612-01
+FROM bodsch/docker-alpine-base:1701-02
 
 MAINTAINER Bodo Schulz <bodo@boone-schulz.de>
 
-LABEL version="1.6.2"
+LABEL version="1.7.0"
 
 EXPOSE 2003
 
-ENV VERSION 2.3
+ENV VERSION 2.5
 
 # ---------------------------------------------------------------------------------------
 
@@ -30,6 +30,9 @@ RUN \
   make && \
   cp relay /usr/bin/carbon-c-relay && \
   apk del --purge \
+    bash \
+    nano \
+    tree \
     build-base \
     git \
     ca-certificates \
@@ -41,6 +44,6 @@ RUN \
 
 COPY rootfs/ /
 
-CMD /opt/startup.sh
+CMD [ "/opt/startup.sh" ]
 
 # ---------------------------------------------------------------------------------------
