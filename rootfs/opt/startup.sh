@@ -32,17 +32,9 @@ run() {
 
   createConfig
 
-  /usr/bin/carbon-c-relay -f ${cfgFile} -t < /dev/null > /dev/null
+  /bin/relay -f ${cfgFile} -t < /dev/null > /dev/null
 
-  /usr/bin/carbon-c-relay -f ${cfgFile} -w 4 -q 2056 -m -b 2056 -l /var/log/carbon-relay.log
-
-#  echo -e "\n"
-#  echo " ==================================================================="
-#  echo " starting carbon-c-relay"
-#  echo " ==================================================================="
-#  echo ""
-#
-#  startSupervisor
+  /bin/relay -f ${cfgFile} -w 4 -q 2056 -m -b 2056 -l /var/log/carbon-relay.log
 }
 
 run
