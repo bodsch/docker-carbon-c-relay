@@ -1,47 +1,81 @@
 
-CONTAINER  := carbon-c-relay
-IMAGE_NAME := docker-carbon-c-relay
+include env_make
+
+NS       = bodsch
+VERSION ?= latest
+
+REPO     = docker-carbon-c-relay
+NAME     = carbon-c-relay
+INSTANCE = default
+
+.PHONY: build push shell run start stop rm release
 
 
 build:
-	docker \
-		build \
-		--rm --tag=$(IMAGE_NAME) .
-	@echo Image tag: ${IMAGE_NAME}
+	docker build \
+		--rm \
+		--tag $(NS)/$(REPO):$(VERSION) .
 
-run:
-	docker \
-		run \
-		--detach \
-		--interactive \
-		--tty \
-		--hostname=${CONTAINER} \
-		--name=${CONTAINER} \
-		$(IMAGE_NAME)
+clean:
+	docker rmi \
+		--force \
+		$(NS)/$(REPO):$(VERSION)
+
+history:
+	docker history \
+		$(NS)/$(REPO):$(VERSION)
+
+push:
+	docker push \
+		$(NS)/$(REPO):$(VERSION)
 
 shell:
-	docker \
-		run \
+	docker run \
 		--rm \
+		--name $(NAME)-$(INSTANCE) \
 		--interactive \
 		--tty \
-		--hostname=${CONTAINER} \
-		--name=${CONTAINER} \
-		$(IMAGE_NAME) \
+		--entrypoint "" \
+		$(PORTS) \
+		$(VOLUMES) \
+		$(ENV) \
+		$(NS)/$(REPO):$(VERSION) \
 		/bin/sh
+
+run:
+	docker run \
+		--rm \
+		--name $(NAME)-$(INSTANCE) \
+		$(PORTS) \
+		$(VOLUMES) \
+		$(ENV) \
+		$(NS)/$(REPO):$(VERSION)
 
 exec:
 	docker exec \
 		--interactive \
 		--tty \
-		${CONTAINER} \
+		$(NAME)-$(INSTANCE) \
 		/bin/sh
 
+start:
+	docker run \
+		--detach \
+		--name $(NAME)-$(INSTANCE) \
+		$(PORTS) \
+		$(VOLUMES) \
+		$(ENV) \
+		$(NS)/$(REPO):$(VERSION)
+
 stop:
-	docker \
-		kill ${CONTAINER}
+	docker stop \
+		$(NAME)-$(INSTANCE)
 
-history:
-	docker \
-		history ${IMAGE_NAME}
+rm:
+	docker rm \
+		$(NAME)-$(INSTANCE)
 
+release: build
+	make push -e VERSION=$(VERSION)
+
+default: build

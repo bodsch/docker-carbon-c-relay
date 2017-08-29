@@ -5,7 +5,13 @@ A Docker container for the Enhanced C implementation of Carbon relay, aggregator
 
 # Status
 
-[![Build Status](https://travis-ci.org/bodsch/docker-carbon-c-relay.svg?branch=1701-02)](https://travis-ci.org/bodsch/docker-carbon-c-relay)
+[![Docker Pulls](https://img.shields.io/docker/pulls/bodsch/docker-carbon-c-relay.svg?branch)][hub]
+[![Image Size](https://images.microbadger.com/badges/image/bodsch/docker-carbon-c-relay.svg?branch)][microbadger]
+[![Build Status](https://travis-ci.org/bodsch/docker-carbon-c-relay.svg?branch)][travis]
+
+[hub]: https://hub.docker.com/r/bodsch/docker-carbon-c-relay/
+[microbadger]: https://microbadger.com/images/bodsch/docker-carbon-c-relay
+[travis]: https://travis-ci.org/bodsch/docker-carbon-c-relay
 
 
 # Build

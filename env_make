@@ -1,0 +1,8 @@
+
+PORTS = \
+  --publish 2003:2003
+
+VOLUMES = \
+  --volume /var/log/docker:/var/log
+
+ENV =
