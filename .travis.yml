@@ -25,8 +25,8 @@ jobs:
       script:
         - make build
         - docker login -u="${DOCKER_USERNAME}" -p="${DOCKER_PASSWORD}"
-        - docker push ${DOCKER_USERNAME}/docker-carbon-c-relay:${ICINGAWEB_VERSION}
-        - docker tag ${DOCKER_USERNAME}/docker-carbon-c-relay:${ICINGAWEB_VERSION} ${DOCKER_USERNAME}/docker-carbon-c-relay:latest
+        - docker push ${DOCKER_USERNAME}/docker-carbon-c-relay:${VERSION}
+        - docker tag  ${DOCKER_USERNAME}/docker-carbon-c-relay:${VERSION} ${DOCKER_USERNAME}/docker-carbon-c-relay:latest
         - docker push ${DOCKER_USERNAME}/docker-carbon-c-relay:latest
 
 #install:
