@@ -4,10 +4,35 @@ group: edge
 services:
   - docker
 
-install:
-  - docker build --tag bodsch/docker-carbon-c-relay .
-  - docker run --detach --name grafana bodsch/docker-carbon-c-relay
+env:
+  global:
+    - VERSION=${VERSION:-3.3}
 
-script:
-  - docker ps | grep -q carbon-c-relay
+jobs:
+  include:
+    - stage: build
+      script:
+        - make build
 
+    - stage: test
+      script:
+        - make build
+        - make start
+        - docker ps | grep -q carbon-c-relay
+        - make stop
+
+    - stage: push docker image
+      script:
+        - make build
+        - docker login -u="${DOCKER_USERNAME}" -p="${DOCKER_PASSWORD}"
+        - docker push ${DOCKER_USERNAME}/docker-carbon-c-relay:${ICINGAWEB_VERSION}
+        - docker tag ${DOCKER_USERNAME}/docker-carbon-c-relay:${ICINGAWEB_VERSION} ${DOCKER_USERNAME}/docker-carbon-c-relay:latest
+        - docker push ${DOCKER_USERNAME}/docker-carbon-c-relay:latest
+
+#install:
+#  - docker build --tag bodsch/docker-carbon-c-relay .
+#  - docker run --detach --name grafana bodsch/docker-carbon-c-relay
+#
+#script:
+#  - docker ps | grep -q carbon-c-relay
+#
