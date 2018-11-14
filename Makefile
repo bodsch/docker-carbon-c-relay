@@ -10,7 +10,7 @@ INSTANCE = default
 BUILD_DATE    := $(shell date +%Y-%m-%d)
 BUILD_VERSION := $(shell date +%y%m)
 BUILD_TYPE    ?= 'stable'
-VERSION       ?= 3.3
+VERSION       ?= 3.4
 
 .PHONY: build push shell run start stop rm release
 
