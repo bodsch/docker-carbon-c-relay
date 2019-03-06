@@ -14,7 +14,7 @@ services:
         - VERSION=${CARBON_RELAY_VERSION}
     container_name: carbon-c-relay
     ports:
-      - 2003
+      - 2003:2003
     environment:
       - GRAPHITE_HOST=graphite
     links:
