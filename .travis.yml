@@ -1,3 +1,4 @@
+
 sudo: required
 group: edge
 
@@ -6,33 +7,33 @@ services:
 
 env:
   global:
-    - VERSION=${VERSION:-3.4}
+    - VERSION=${VERSION:-3.5}
 
 jobs:
   include:
     - stage: build
       script:
-        - make build
+        - make
 
     - stage: test
       script:
-        - make build
-        - make start
-        - docker ps | grep -q carbon-c-relay
-        - make stop
+        - make compose-file
+        - docker-compose build
+        - docker-compose up -d
+        - sleep 30s
+        - make test
+        - docker-compose down
 
     - stage: push docker image
+       if: branch = master
       script:
-        - make build
+        - make
+        - docker tag  ${USER}/carbon-c-relay:latest ${DOCKER_USERNAME}/docker-carbon-c-relay:latest
+        - docker tag  ${USER}/carbon-c-relay:latest ${DOCKER_USERNAME}/docker-carbon-c-relay:${VERSION}
+        #
         - docker login -u="${DOCKER_USERNAME}" -p="${DOCKER_PASSWORD}"
-        - docker push ${DOCKER_USERNAME}/docker-carbon-c-relay:${VERSION}
-        - docker tag  ${DOCKER_USERNAME}/docker-carbon-c-relay:${VERSION} ${DOCKER_USERNAME}/docker-carbon-c-relay:latest
+        #
         - docker push ${DOCKER_USERNAME}/docker-carbon-c-relay:latest
-
-#install:
-#  - docker build --tag bodsch/docker-carbon-c-relay .
-#  - docker run --detach --name grafana bodsch/docker-carbon-c-relay
-#
-#script:
-#  - docker ps | grep -q carbon-c-relay
-#
+        - docker push ${DOCKER_USERNAME}/docker-carbon-c-relay:${VERSION}
+        #
+        - docker logout

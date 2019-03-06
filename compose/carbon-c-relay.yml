@@ -1,0 +1,21 @@
+---
+version: '3.3'
+
+services:
+
+  carbon-c-relay:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+      args:
+        - BUILD_DATE=${BUILD_DATE}
+        - BUILD_VERSION=${BUILD_VERSION}
+        - BUILD_TYPE=${BUILD_TYPE}
+        - VERSION=${CARBON_RELAY_VERSION}
+    container_name: carbon-c-relay
+    ports:
+      - 2003
+    environment:
+      - GRAPHITE_HOST=graphite
+    links:
+      - graphite
