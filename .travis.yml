@@ -25,7 +25,7 @@ jobs:
         - docker-compose down
 
     - stage: push docker image
-       if: branch = master
+      if: branch = master
       script:
         - make
         - docker tag  ${USER}/carbon-c-relay:latest ${DOCKER_USERNAME}/docker-carbon-c-relay:latest
