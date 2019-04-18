@@ -16,6 +16,7 @@ RUN \
   apk add     --quiet --no-cache \
     automake \
     g++ \
+    flex \
     git \
     make \
     musl-dev \
