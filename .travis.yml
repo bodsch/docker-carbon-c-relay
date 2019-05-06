@@ -1,39 +1,31 @@
-
 sudo: required
 group: edge
-
 services:
-  - docker
-
+- docker
 env:
   global:
-    - VERSION=${VERSION:-3.5}
-
+  - VERSION=${VERSION:-3.5}
+  - secure: h3M21lch2jj8q9qdI2Oa6VwdLCHk8/3iPq/GTHZqAIvPS0NPI3CpzO5AIZd8Si+9Yas90da6O0OdluE3UBXlRkDbJangV60SCDpoxhAKAtPb2R3s81uojhKAubwd8Z+xOgSDRyZcPMhYS+BXa6uqOoATtNXrgrySdX+S95Af9PLOQw/Xa1VV98jVpiOY5zcnyZreZnIPs322hjA7845T+M/Sprj+YPpToRBnMU2w9asRv1Ew4Aag6WvbqKwtIrpo6WpGVVe8++Ejql5OU/XhZwCRukwzO2yFxs+3/MYSOBLIUucrWxGbPyxwxE9OE/cH6JybGMT1s3aTnHQ8h9+5hZa+1VgbzpYZnYxbDn2Jma6npybyfB3qjoOz1eWCgPvnOCkVaLdfeh4PxvqT2WgLw+fTK10lrGGBKYZxPGKVL0G9SCdaw/rqcJ3WiBat6ctkhrkuHG9m9Pkj0ecHpnopultjSQEnAnV4IvSk2dwwBlVUkYgYfI+IxTdgzHQavBOnsQFLF73sVs9RXXmblKpyesCy17l6ONVuWVCpWF/Pp3+Maoc07QqcHzGCtHnc9VTNuaGNeeZScHB9hRSzKxtwMsr9mV9us3wLUcXOwhZi5Tjx+VbDY5MN6eUiWRYXnUDxnc6XByivFh1IWQPOqPRVZACnGAJIuBNZ9+D3cDgcZ1I=
 jobs:
   include:
-    - stage: build
-      script:
-        - make
-
-    - stage: test
-      script:
-        - make compose-file
-        - docker-compose build
-        - docker-compose up -d
-        - sleep 30s
-        - make test
-        - docker-compose down
-
-    - stage: push docker image
-      if: branch = master
-      script:
-        - make
-        - docker tag  ${USER}/carbon-c-relay:latest ${DOCKER_USERNAME}/docker-carbon-c-relay:latest
-        - docker tag  ${USER}/carbon-c-relay:latest ${DOCKER_USERNAME}/docker-carbon-c-relay:${VERSION}
-        #
-        - docker login -u="${DOCKER_USERNAME}" -p="${DOCKER_PASSWORD}"
-        #
-        - docker push ${DOCKER_USERNAME}/docker-carbon-c-relay:latest
-        - docker push ${DOCKER_USERNAME}/docker-carbon-c-relay:${VERSION}
-        #
-        - docker logout
+  - stage: build
+    script:
+    - make
+  - stage: test
+    script:
+    - make compose-file
+    - docker-compose build
+    - docker-compose up -d
+    - sleep 30s
+    - make test
+    - docker-compose down
+  - stage: push docker image
+    if: branch = master
+    script:
+    - make
+    - docker tag  ${USER}/carbon-c-relay:latest ${DOCKER_USERNAME}/docker-carbon-c-relay:latest
+    - docker tag  ${USER}/carbon-c-relay:latest ${DOCKER_USERNAME}/docker-carbon-c-relay:${VERSION}
+    - docker login -u="${DOCKER_USERNAME}" -p="${DOCKER_PASSWORD}"
+    - docker push ${DOCKER_USERNAME}/docker-carbon-c-relay:latest
+    - docker push ${DOCKER_USERNAME}/docker-carbon-c-relay:${VERSION}
+    - docker logout
