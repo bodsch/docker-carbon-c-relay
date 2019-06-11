@@ -1,7 +1,5 @@
 #!/bin/bash
 
-#set -x
-
 HOST=127.0.0.1
 PORT=2003
 
@@ -30,32 +28,17 @@ wait_for_service() {
     echo "Could not connect to the carbon-c-relay service"
     exit 1
   fi
+
+  echo ""
 }
 
-#
-# Get the current hostname
-#
-host=$(hostname --short)
 
+# A simple function to send data to a remote host:port address.
 #
-# The current time - we want all metrics to be reported at the
-# same time.
-#
-time=$(date +%s)
-
-
-###
-##
-## A simple function to send data to a remote host:port address.
-##
-###
 send() {
 
-#  if [ ! -z "$VERBOSE"  ]; then
-    echo "Sending : $1"
-#  fi
+  echo "Sending : $1"
 
-  #
   # If we have nc then send the data, otherwise alert the user.
   #
   if ( command -v nc >/dev/null 2>/dev/null ); then
@@ -74,31 +57,29 @@ send() {
 }
 
 
-
 send_request() {
 
-  ##
+  host=$(hostname --short)
+
+  _time() {
+    echo $(date +%s)
+  }
+
   ## Fork-count
   ##
-  if [ -e /proc/stat ]; then
-      forked=$(awk '/processes/ {print $2}' /proc/stat)
-      send "$host.process.forked $forked $time"
+  if [ -e /proc/stat ]
+  then
+    forked=$(awk '/processes/ {print $2}' /proc/stat)
+    send "${host}.process.forked ${forked} $(_time)"
   fi
 
-
-  ##
   ## Process-count
   ##
-  if ( command -v ps >/dev/null 2>/dev/null ); then
-      pcount=$(ps -Al | wc -l)
-      send "$host.process.count  $pcount $time"
+  if ( command -v ps >/dev/null 2>/dev/null )
+  then
+    pcount=$(ps -Al | wc -l)
+    send "${host}.process.count  ${pcount} $(_time)"
   fi
-
-
-
-#  curl \
-#    --head \
-#    http://localhost:2003
 }
 
 
@@ -121,4 +102,3 @@ wait_for_service
 send_request
 
 exit 0
-
