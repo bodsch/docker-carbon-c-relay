@@ -37,22 +37,24 @@ wait_for_service() {
 #
 send() {
 
-  echo "Sending : $1"
+  echo "  - '${1}'"
 
+  #
   # If we have nc then send the data, otherwise alert the user.
   #
-  if ( command -v nc >/dev/null 2>/dev/null ); then
+  if ( command -v nc >/dev/null 2>/dev/null )
+  then
     echo "${1}" | nc -w1 "${HOST}" "${PORT}"
     result=${?}
 
     if [ ${result} -eq 0 ]
     then
-      echo "  .. successful"
+      echo "     successful"
     else
-      echo "  .. failed"
+      echo "     failed"
     fi
   else
-      echo "nc (netcat) is not present.  Aborting"
+    echo "nc (netcat) is not present.  Aborting"
   fi
 }
 

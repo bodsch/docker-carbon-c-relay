@@ -1,4 +1,4 @@
-FROM alpine:3.9 as builder
+FROM alpine:3.10 as builder
 
 ARG BUILD_DATE
 ARG BUILD_VERSION
@@ -52,7 +52,7 @@ CMD ["/bin/sh"]
 
 # ---------------------------------------------------------------------------------------
 
-FROM alpine:3.9
+FROM alpine:3.10
 
 ENV \
   TZ='Europe/Berlin'

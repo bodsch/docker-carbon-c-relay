@@ -4,6 +4,7 @@ version: '3.3'
 services:
 
   carbon-c-relay:
+    restart: always
     build:
       context: ..
       dockerfile: Dockerfile
